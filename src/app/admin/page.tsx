@@ -1,0 +1,6 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { listOpenReports, listReviewQueue } from "@/server/moderation/moderation-service";
+import { ReviewActions } from "@/components/admin/review-actions";
+
+export default async function AdminPage() { const session = await auth(); if (session?.user?.role !== "ADMIN" && session?.user?.role !== "MODERATOR") redirect("/dashboard"); const [works, reports] = await Promise.all([listReviewQueue(), listOpenReports()]); return <main className="dashboard-page"><header className="dashboard-header"><div><p className="eyebrow">MODERATION</p><h1>内容审核</h1></div></header><section className="dashboard-list"><h2>待审核作品 · {works.length}</h2>{works.length ? works.map((work) => <article key={work.id}><div><p>{work.category.name} · {work.author.username}</p><h3>{work.title}</h3><p>{work.summary}</p></div><ReviewActions workId={work.id} /></article>) : <p className="empty-state">审核队列为空。</p>}</section><section className="dashboard-list"><h2>待处理举报 · {reports.length}</h2>{reports.length ? reports.map((report) => <article key={report.id}><div><p>{report.targetType} · {report.reason} · {report.reporter.username}</p><h3>{report.description || "未填写补充说明"}</h3></div><span>待处理</span></article>) : <p className="empty-state">暂无待处理举报。</p>}</section></main>; }
