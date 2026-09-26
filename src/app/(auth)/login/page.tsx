@@ -29,7 +29,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
 
   return (
     <main className="auth-page">
-      <Link className="brand" href="/"><span className="brand-mark">心</span><span>心屿</span></Link>
+      <Link className="brand" href="/"><span className="brand-mark" aria-hidden="true" /><span>心屿</span></Link>
       <section className="auth-card" aria-labelledby="login-title">
         <p className="eyebrow">WELCOME BACK</p>
         <h1 id="login-title">登录心屿</h1>

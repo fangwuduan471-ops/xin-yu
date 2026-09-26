@@ -1,10 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
 
 import { auth } from "@/auth";
-import { WorkError, createDraft, submitForReview, updateDraft } from "@/server/works/work-service";
+import { WorkError, createDraft, deleteDraft, submitForReview, updateDraft } from "@/server/works/work-service";
 
 function readWorkInput(formData: FormData) {
   return {
@@ -65,5 +66,19 @@ export async function updateWorkAction(formData: FormData) {
       redirect(`/write/${workId}?error=${encodeURIComponent(workErrorMessage(error))}`);
     }
   }
+  redirect("/dashboard");
+}
+
+export async function deleteDraftAction(workId: string) {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+
+  try {
+    await deleteDraft(session.user.id, workId);
+  } catch (error) {
+    redirect(`/dashboard?error=${encodeURIComponent(workErrorMessage(error))}`);
+  }
+
+  revalidatePath("/dashboard");
   redirect("/dashboard");
 }

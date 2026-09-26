@@ -10,7 +10,7 @@ export default async function RegisterPage({ searchParams }: PageProps<"/registe
 
   return (
     <main className="auth-page">
-      <Link className="brand" href="/"><span className="brand-mark">心</span><span>心屿</span></Link>
+      <Link className="brand" href="/"><span className="brand-mark" aria-hidden="true" /><span>心屿</span></Link>
       <section className="auth-card" aria-labelledby="register-title">
         <p className="eyebrow">{isClosedBeta ? "CLOSED BETA" : "START WRITING"}</p>
         <h1 id="register-title">{isClosedBeta ? "申请测试资格" : "加入心屿"}</h1>

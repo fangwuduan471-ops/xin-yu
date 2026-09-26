@@ -27,7 +27,7 @@ export default async function Home() {
           <p className="eyebrow">XINYU · {isClosedBeta ? "CLOSED BETA" : "OPEN LITERARY COMMUNITY"}</p>
           <h1 id="hero-heading">让每一段认真写下的文字，<br />都有被看见的机会。</h1>
           <p className="hero-copy">{isClosedBeta ? "心屿正在进行小范围测试。受邀作者可以写下感受，读见彼此。" : "心屿是为年轻创作者准备的一处安静角落。写下感受，读见彼此。"}</p>
-          <div className="hero-actions"><Link className="button button-primary" href="/register">{isClosedBeta ? "受邀加入测试" : "开始创作"}</Link><Link className="text-link" href="/works">去读一读 <span aria-hidden="true">→</span></Link></div>
+          <div className="hero-actions"><Link className="button button-primary" href="/register">{isClosedBeta ? "受邀加入测试" : "开始创作"}</Link><Link className="button button-outline hero-read-link" href="/works">去读一读 <span aria-hidden="true">→</span></Link></div>
         </section>
 
         <section className="home-section" aria-labelledby="introduction-heading">

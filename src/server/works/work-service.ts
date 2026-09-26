@@ -80,6 +80,18 @@ export async function updateDraft(authorId: string, workId: string, input: WorkI
   });
 }
 
+export async function deleteDraft(authorId: string, workId: string) {
+  const prisma = getPrisma();
+  const work = await prisma.work.findFirst({
+    where: { id: workId, authorId, status: WorkStatus.DRAFT },
+    select: { id: true },
+  });
+
+  if (!work) throw new WorkError("只能删除自己的草稿。审核中或已发布的作品无法删除。");
+
+  await prisma.work.delete({ where: { id: work.id } });
+}
+
 export async function submitForReview(authorId: string, workId: string) {
   const prisma = getPrisma();
   const work = await prisma.work.findFirst({ where: { id: workId, authorId } });

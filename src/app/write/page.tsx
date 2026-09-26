@@ -15,7 +15,7 @@ export default async function WritePage({ searchParams }: PageProps<"/write">) {
 
   return (
     <main className="editor-page">
-      <header className="editor-header"><span className="brand"><span className="brand-mark">心</span><span>心屿</span></span><span>写作草稿</span></header>
+      <header className="editor-header"><span className="brand"><span className="brand-mark" aria-hidden="true" /><span>心屿</span></span><span>写作草稿</span></header>
       <WorkEditorForm action={saveWorkAction} categories={categories} errorMessage={errorMessage} />
     </main>
   );

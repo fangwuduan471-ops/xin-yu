@@ -30,7 +30,7 @@ export default async function EditWorkPage({ params, searchParams }: EditWorkPag
   return (
     <main className="editor-page">
       <header className="editor-header">
-        <Link className="brand" href="/"><span className="brand-mark">心</span><span>心屿</span></Link>
+        <Link className="brand" href="/"><span className="brand-mark" aria-hidden="true" /><span>心屿</span></Link>
         <Link className="editor-header-link" href="/dashboard">返回作者中心</Link>
       </header>
       <WorkEditorForm
