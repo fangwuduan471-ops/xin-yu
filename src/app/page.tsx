@@ -34,7 +34,7 @@ export default async function Home() {
           <div className="section-heading"><div><p className="eyebrow">WELCOME TO XINYU</p><h2 id="introduction-heading">认识心屿</h2></div></div>
           {introduction ? (
             <Link className="featured-work featured-work-link" href={`/works/${introduction.slug}`} aria-label={`阅读：${introduction.title}`}>
-              <div className="featured-art" aria-hidden="true"><span className="landscape-title">心屿</span><i className="landscape-sun" /><i className="landscape-mountain mountain-far" /><i className="landscape-mountain mountain-near" /><i className="landscape-lake lake-one" /><i className="landscape-lake lake-two" /><i className="landscape-boat"><i /></i></div>
+              <div className="featured-art" aria-hidden="true"><span className="landscape-title">心屿</span></div>
               <div className="featured-content"><p className="work-category">{introduction.category.name}</p><h3>{introduction.title}</h3><p className="featured-excerpt">{introduction.summary}</p><div className="work-byline"><span className="avatar">心</span><span>心屿</span><span>·</span><span>点击进入阅读</span></div><span className="button button-quiet">阅读介绍 <span aria-hidden="true">→</span></span></div>
             </Link>
           ) : <section className="empty-state"><h2>介绍正在抵达</h2><p>心屿的第一篇介绍将在这里与读者见面。</p></section>}

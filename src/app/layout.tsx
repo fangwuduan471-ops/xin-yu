@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+import { RowingLoader } from "@/components/layout/rowing-loader";
+
 import "./globals.css";
 
 export function generateMetadata(): Metadata {
@@ -11,5 +14,5 @@ export function generateMetadata(): Metadata {
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="zh-CN"><body>{children}</body></html>;
+  return <html lang="zh-CN"><body><RowingLoader />{children}</body></html>;
 }
