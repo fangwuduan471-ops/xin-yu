@@ -15,6 +15,11 @@ function getConnectionString() {
   if (!url.searchParams.has("sslmode")) {
     url.searchParams.set("sslmode", "require");
   }
+
+  // pg 8 treats sslmode=require as certificate verification unless this
+  // compatibility flag is present. Supabase's pooled connection uses TLS but
+  // does not provide a chain Node can verify in this configuration.
+  url.searchParams.set("uselibpqcompat", "true");
   return url.toString();
 }
 
