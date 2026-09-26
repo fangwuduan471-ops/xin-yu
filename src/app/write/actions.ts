@@ -26,11 +26,14 @@ export async function saveWorkAction(formData: FormData) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
+  const existingWorkId = String(formData.get("workId") ?? "");
   let draft;
   try {
-    draft = await createDraft(session.user.id, readWorkInput(formData));
+    draft = existingWorkId
+      ? await updateDraft(session.user.id, existingWorkId, readWorkInput(formData))
+      : await createDraft(session.user.id, readWorkInput(formData));
   } catch (error) {
-    redirect(`/write?error=${encodeURIComponent(workErrorMessage(error))}`);
+    redirect(`${existingWorkId ? `/write/${existingWorkId}` : "/write"}?error=${encodeURIComponent(workErrorMessage(error))}`);
   }
 
   if (formData.get("intent") === "submit") {

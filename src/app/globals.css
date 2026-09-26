@@ -85,6 +85,7 @@ h2 { margin: 0; font-size: 30px; letter-spacing: -.03em; }
 .editor-form textarea { min-height: 90px; resize: vertical; line-height: 1.7; }
 .editor-form .editor-content { min-height: 360px; font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px; line-height: 2; }
 .editor-form input:focus, .editor-form textarea:focus, .editor-form select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #e7eef6; }
+.editor-status { display: flex; justify-content: space-between; gap: 16px; margin-top: -12px; color: var(--muted); font-size: 12px; }.editor-status span:last-child { color: #536b87; }
 .editor-note { margin: -4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .editor-actions { display: flex; justify-content: end; gap: 12px; }
 .editor-actions button { cursor: pointer; }
