@@ -29,7 +29,10 @@ export default async function EditWorkPage({ params, searchParams }: EditWorkPag
   const errorMessage = typeof error === "string" ? error : undefined;
   return (
     <main className="editor-page">
-      <header className="editor-header"><Link className="brand" href="/"><span className="brand-mark">心</span><span>心屿</span></Link><span>继续编辑草稿</span></header>
+      <header className="editor-header">
+        <Link className="brand" href="/"><span className="brand-mark">心</span><span>心屿</span></Link>
+        <Link className="editor-header-link" href="/dashboard">返回作者中心</Link>
+      </header>
       <WorkEditorForm
         action={updateWorkAction}
         categories={categories}
