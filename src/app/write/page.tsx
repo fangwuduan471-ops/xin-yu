@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import { auth } from "@/auth";
 import { WorkEditorForm } from "@/components/works/work-editor-form";
@@ -15,7 +16,7 @@ export default async function WritePage({ searchParams }: PageProps<"/write">) {
 
   return (
     <main className="editor-page">
-      <header className="editor-header"><span className="brand"><span className="brand-mark" aria-hidden="true" /><span>心屿</span></span><span>写作草稿</span></header>
+      <header className="editor-header"><Link className="brand" href="/"><span className="brand-mark" aria-hidden="true" /><span>心屿</span></Link><span>写作草稿</span></header>
       <WorkEditorForm action={saveWorkAction} categories={categories} errorMessage={errorMessage} />
     </main>
   );
