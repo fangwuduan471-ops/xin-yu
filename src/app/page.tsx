@@ -53,7 +53,7 @@ export default async function Home() {
         <section className="home-section" aria-labelledby="newcomer-heading">
           <div className="section-heading"><div><p className="eyebrow">FIRST LIGHT</p><h2 id="newcomer-heading">初来乍到的作者</h2></div><p className="section-note">让新的声音，也有自己的位置。</p></div>
           {authors.length ? (
-            <div className="newcomer-list">{authors.map((author) => <Link className="newcomer-card" href={`/authors/${encodeURIComponent(author.username)}`} key={author.username}><span className="avatar avatar-pale">{author.username.slice(0, 1)}</span><div><h3>{author.username}</h3><p>{author.bio || "在心屿留下自己的文字。"}</p></div><span aria-hidden="true">↗</span></Link>)}</div>
+            <div className="newcomer-list">{authors.map((author) => <Link className="newcomer-card" href={`/authors/${encodeURIComponent(author.username)}`} key={author.username}><span className="avatar avatar-pale">{author.username.slice(0, 1)}</span><div><h3>{author.username}</h3><p>{author.bio || "在心屿留下自己的文字。"}</p></div><span className="newcomer-work-count">{author._count.works} 篇公开作品</span></Link>)}</div>
           ) : <section className="empty-author-state"><p>暂无作者。</p><span>首批作者发布公开作品后，这里将可以直接进入他们的个人主页。</span></section>}
         </section>
       </main>

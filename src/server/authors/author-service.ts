@@ -22,17 +22,24 @@ export async function getAuthorProfile(username: string) {
 }
 
 export async function listPublishedAuthors() {
+  const publishedWorkFilter = {
+    status: WorkStatus.PUBLISHED,
+    slug: { not: siteIntroductionSlug },
+  };
+
   return getPrisma().user.findMany({
     where: {
       works: {
-        some: {
-          status: WorkStatus.PUBLISHED,
-          slug: { not: siteIntroductionSlug },
-        },
+        some: publishedWorkFilter,
       },
     },
-    select: { username: true, bio: true, avatarUrl: true, createdAt: true },
+    select: {
+      username: true,
+      bio: true,
+      avatarUrl: true,
+      createdAt: true,
+      _count: { select: { works: { where: publishedWorkFilter } } },
+    },
     orderBy: { createdAt: "desc" },
-    take: 6,
   });
 }
