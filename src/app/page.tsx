@@ -2,19 +2,22 @@ import Link from "next/link";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { WorkCard } from "@/components/work/work-card";
 import { isClosedBetaEnabled } from "@/lib/beta-access";
 import { listPublishedAuthors } from "@/server/authors/author-service";
-import { getPublishedWork, listPublicCategories } from "@/server/works/public-work-service";
+import { getPublishedWork, listPublishedWorks, listPublicCategories } from "@/server/works/public-work-service";
 
 const siteIntroductionSlug = "about-xinyu";
 
 export default async function Home() {
   const isClosedBeta = isClosedBetaEnabled();
-  const [introduction, categories, authors] = await Promise.all([
+  const [introduction, publishedWorks, categories, authors] = await Promise.all([
     getPublishedWork(siteIntroductionSlug),
+    listPublishedWorks(),
     listPublicCategories(),
     listPublishedAuthors(),
   ]);
+  const recommendedWorks = publishedWorks.filter((work) => work.slug !== siteIntroductionSlug).slice(0, 3);
 
   return (
     <div className="site-shell">
@@ -31,10 +34,15 @@ export default async function Home() {
           <div className="section-heading"><div><p className="eyebrow">WELCOME TO XINYU</p><h2 id="introduction-heading">认识心屿</h2></div></div>
           {introduction ? (
             <Link className="featured-work featured-work-link" href={`/works/${introduction.slug}`} aria-label={`阅读：${introduction.title}`}>
-              <div className="featured-art" aria-hidden="true"><span className="featured-art-title">心屿</span><span className="featured-art-index">01</span><i className="featured-art-star star-one" /><i className="featured-art-star star-two" /><i className="featured-art-line" /></div>
+              <div className="featured-art" aria-hidden="true"><span className="landscape-title">心屿</span><i className="landscape-sun" /><i className="landscape-mountain mountain-far" /><i className="landscape-mountain mountain-near" /><i className="landscape-lake lake-one" /><i className="landscape-lake lake-two" /><i className="landscape-boat"><i /></i></div>
               <div className="featured-content"><p className="work-category">{introduction.category.name}</p><h3>{introduction.title}</h3><p className="featured-excerpt">{introduction.summary}</p><div className="work-byline"><span className="avatar">心</span><span>心屿</span><span>·</span><span>点击进入阅读</span></div><span className="button button-quiet">阅读介绍 <span aria-hidden="true">→</span></span></div>
             </Link>
           ) : <section className="empty-state"><h2>介绍正在抵达</h2><p>心屿的第一篇介绍将在这里与读者见面。</p></section>}
+        </section>
+
+        <section className="home-section" aria-labelledby="recommendation-heading">
+          <div className="section-heading"><div><p className="eyebrow">EDITOR&apos;S CHOICE</p><h2 id="recommendation-heading">今日推荐</h2></div><Link className="text-link" href="/works?sort=latest">查看全部 →</Link></div>
+          {recommendedWorks.length ? <section className="public-work-grid">{recommendedWorks.map((work) => <WorkCard key={work.id} work={work} />)}</section> : <section className="empty-recommendation"><span aria-hidden="true">⌇</span><div><h3>还没有作品喔</h3><p>第一篇来自创作者的公开作品，会在这里与大家见面。</p></div></section>}
         </section>
 
         <section className="home-section discovery-section" aria-labelledby="discovery-heading">
