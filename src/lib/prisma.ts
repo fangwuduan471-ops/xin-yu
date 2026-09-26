@@ -3,18 +3,36 @@ import { PrismaClient } from "@/generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-export function getPrisma() {
-  if (globalForPrisma.prisma) return globalForPrisma.prisma;
-
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
+function getConnectionString() {
+  const value = process.env.DATABASE_URL;
+  if (!value) {
     throw new Error("DATABASE_URL is required before database features can be used.");
   }
 
+  // Supabase requires TLS for connections made from Vercel. Keeping this here
+  // avoids depending on a manually-added query parameter in every environment.
+  const url = new URL(value);
+  if (!url.searchParams.has("sslmode")) {
+    url.searchParams.set("sslmode", "require");
+  }
+  return url.toString();
+}
+
+export function getPrisma() {
+  if (globalForPrisma.prisma) return globalForPrisma.prisma;
+
   const prisma = new PrismaClient({
-    adapter: new PrismaPg({ connectionString }),
+    // A Vercel function may create many short-lived instances. One connection
+    // per instance avoids exhausting the Supabase connection pool.
+    adapter: new PrismaPg({
+      connectionString: getConnectionString(),
+      max: 1,
+      idleTimeoutMillis: 10_000,
+      connectionTimeoutMillis: 10_000,
+    }),
   });
 
-  if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+  // Reuse the client within a warm serverless instance as well as in development.
+  globalForPrisma.prisma = prisma;
   return prisma;
 }

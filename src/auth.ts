@@ -25,15 +25,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const parsed = credentialsSchema.safeParse(credentials);
         if (!parsed.success) return null;
 
-        const user = await getPrisma().user.findUnique({
-          where: { email: parsed.data.email.toLowerCase() },
-          select: { id: true, username: true, email: true, passwordHash: true, role: true, status: true },
-        });
+        try {
+          const user = await getPrisma().user.findUnique({
+            where: { email: parsed.data.email.toLowerCase() },
+            select: { id: true, username: true, email: true, passwordHash: true, role: true, status: true },
+          });
 
-        if (!user?.passwordHash || user.status !== "ACTIVE") return null;
-        if (!(await compare(parsed.data.password, user.passwordHash))) return null;
+          if (!user?.passwordHash || user.status !== "ACTIVE") return null;
+          if (!(await compare(parsed.data.password, user.passwordHash))) return null;
 
-        return { id: user.id, name: user.username, email: user.email, role: user.role };
+          return { id: user.id, name: user.username, email: user.email, role: user.role };
+        } catch (error) {
+          // This is deliberately limited to safe metadata: connection strings
+          // and database credentials must never be included in Vercel logs.
+          const record = error as { name?: unknown; code?: unknown };
+          console.error("Credential authorization database failure", {
+            name: typeof record?.name === "string" ? record.name : "UnknownError",
+            code: typeof record?.code === "string" ? record.code : undefined,
+          });
+          throw error;
+        }
       },
     }),
   ],
